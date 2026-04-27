@@ -116,6 +116,9 @@
             <option>Serra</option>
             <option>Outra</option>
           </select>
+          @if (form.get('cidade')?.touched && form.get('cidade')?.invalid) {
+            <p class="label text-error">Selecione uma cidade</p>
+          }
         </fieldset>
 
         <label class="label cursor-pointer justify-start gap-3 rounded-box border border-gray-300 bg-white px-3 py-3">
@@ -123,7 +126,7 @@
           <span class="label-text">Aceito os termos</span>
         </label>
         @if (form.get('termos')?.touched && form.get('termos')?.invalid) {
-          <p class="label text-error">Você precisa aceitar os termos</p>
+          <p class="mt-1 px-1 text-sm text-error">Você precisa aceitar os termos para continuar.</p>
         }
 
         <div class="card-actions mt-2">
