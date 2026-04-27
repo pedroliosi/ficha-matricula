@@ -64,7 +64,7 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <fieldset class="fieldset w-full">
             <legend class="fieldset-legend">Idade</legend>
-            <input type="number" formControlName="idade" min="18" class="input input-bordered border-gray-300 w-full" />
+            <input type="number" formControlName="idade" min="18" placeholder="Ex: 18" class="input input-bordered border-gray-300 w-full" />
             @if (form.get('idade')?.touched && form.get('idade')?.errors?.['required']) {
               <p class="label text-error">Idade é obrigatória</p>
             }
