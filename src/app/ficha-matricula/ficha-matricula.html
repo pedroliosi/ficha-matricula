@@ -1,0 +1,173 @@
+<section class="mx-auto w-full max-w-4xl">
+  <div class="card rounded-2xl border border-gray-300 bg-white shadow-xl">
+    <div class="card-body gap-6 p-5 md:p-8">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-semibold md:text-3xl">Ficha de Matrícula</h1>
+          <p class="mt-1 text-sm text-base-content/80">Preencha seus dados para concluir a matrícula.</p>
+        </div>
+        <img
+          src="/colatina-vertical-cor.png"
+          alt="Logo IFES"
+          class="h-14 w-auto object-contain md:h-16"
+        />
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="enviar(resumoModal)" class="space-y-5">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Nome completo</legend>
+            <input type="text" formControlName="nome" placeholder="Seu nome" class="input input-bordered border-gray-300 w-full" />
+            @if (form.get('nome')?.touched && form.get('nome')?.invalid) {
+              <p class="label text-error">Nome é obrigatório</p>
+            }
+          </fieldset>
+
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">E-mail</legend>
+            <input type="email" formControlName="email" placeholder="voce@email.com" class="input input-bordered border-gray-300 w-full" />
+            @if (form.get('email')?.touched && form.get('email')?.errors?.['required']) {
+              <p class="label text-error">E-mail é obrigatório</p>
+            }
+            @if (form.get('email')?.touched && form.get('email')?.errors?.['email']) {
+              <p class="label text-error">Informe um e-mail válido</p>
+            }
+          </fieldset>
+        </div>
+
+        <fieldset class="fieldset w-full rounded-box border border-gray-300 bg-white p-4">
+          <legend class="fieldset-legend px-1">Telefones</legend>
+
+          <div formArrayName="telefones" class="space-y-2">
+            @for (tel of telefones.controls; track $index; let i = $index) {
+              <div class="join w-full" [formGroupName]="i">
+                <input
+                  type="text"
+                  formControlName="numero"
+                  placeholder="(27) 99999-9999"
+                  class="input input-bordered border-gray-300 join-item w-full"
+                  (input)="formatarTelefone($event, i)"
+                />
+                <button type="button" class="btn join-item border-error bg-error text-error-content hover:bg-error/90" (click)="removerTelefone(i)">Remover</button>
+              </div>
+            }
+          </div>
+
+          <div class="mt-3">
+            <button type="button" class="btn btn-success" (click)="adicionarTelefone()">Adicionar telefone</button>
+          </div>
+        </fieldset>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Idade</legend>
+            <input type="number" formControlName="idade" min="18" class="input input-bordered border-gray-300 w-full" />
+            @if (form.get('idade')?.touched && form.get('idade')?.errors?.['required']) {
+              <p class="label text-error">Idade é obrigatória</p>
+            }
+            @if (form.get('idade')?.touched && form.get('idade')?.errors?.['min']) {
+              <p class="label text-error">Idade mínima: 18 anos</p>
+            }
+          </fieldset>
+
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Gênero</legend>
+            <select formControlName="genero" class="select select-bordered border-gray-300 w-full">
+              <option value="">Selecione</option>
+              <option value="masculino">Masculino</option>
+              <option value="feminino">Feminino</option>
+              <option value="outro">Outro</option>
+            </select>
+            @if (form.get('genero')?.touched && form.get('genero')?.invalid) {
+              <p class="label text-error">Selecione um gênero</p>
+            }
+          </fieldset>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Senha</legend>
+            <input type="password" formControlName="senha" class="input input-bordered border-gray-300 w-full" />
+            @if (form.get('senha')?.touched && form.get('senha')?.invalid) {
+              <p class="label text-error">Senha obrigatória</p>
+            }
+          </fieldset>
+
+          <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Confirmar senha</legend>
+            <input type="password" formControlName="confirmarSenha" class="input input-bordered border-gray-300 w-full" />
+            @if (form.get('confirmarSenha')?.touched && form.get('confirmarSenha')?.invalid) {
+              <p class="label text-error">Confirme a senha</p>
+            }
+            @if (form.errors?.['senhasDiferentes'] && form.get('confirmarSenha')?.touched) {
+              <p class="label text-error">As senhas não coincidem</p>
+            }
+          </fieldset>
+        </div>
+
+        <fieldset class="fieldset w-full">
+          <legend class="fieldset-legend">Cidade</legend>
+          <select formControlName="cidade" class="select select-bordered border-gray-300 w-full">
+            <option value="">Selecione</option>
+            <option>Colatina</option>
+            <option>Marilândia</option>
+            <option>Linhares</option>
+            <option>Vitória</option>
+            <option>Serra</option>
+            <option>Outra</option>
+          </select>
+        </fieldset>
+
+        <label class="label cursor-pointer justify-start gap-3 rounded-box border border-gray-300 bg-white px-3 py-3">
+          <input type="checkbox" formControlName="termos" class="checkbox checkbox-success" />
+          <span class="label-text">Aceito os termos</span>
+        </label>
+        @if (form.get('termos')?.touched && form.get('termos')?.invalid) {
+          <p class="label text-error">Você precisa aceitar os termos</p>
+        }
+
+        <div class="card-actions mt-2">
+          <button type="submit" class="btn btn-success btn-block" [disabled]="form.invalid">Enviar matrícula</button>
+        </div>
+      </form>
+
+      <dialog #resumoModal class="modal">
+        <div class="modal-box max-w-2xl rounded-2xl border border-gray-300 bg-white">
+          <h3 class="text-xl font-semibold">Dados enviados</h3>
+          <p class="mt-1 text-sm text-base-content/70">Confira abaixo as informações preenchidas.</p>
+
+          @if (dadosEnviados) {
+            <div class="mt-5 space-y-2 text-sm md:text-base">
+              <p><span class="font-semibold">Nome:</span> {{ dadosEnviados.nome }}</p>
+              <p><span class="font-semibold">E-mail:</span> {{ dadosEnviados.email }}</p>
+              <p><span class="font-semibold">Idade:</span> {{ dadosEnviados.idade }}</p>
+              <p><span class="font-semibold">Gênero:</span> {{ dadosEnviados.genero }}</p>
+              <p><span class="font-semibold">Cidade:</span> {{ dadosEnviados.cidade }}</p>
+              <p><span class="font-semibold">Senha:</span> {{ dadosEnviados.senha }}</p>
+              <p><span class="font-semibold">Confirmar senha:</span> {{ dadosEnviados.confirmarSenha }}</p>
+              <p><span class="font-semibold">Termos aceitos:</span> {{ dadosEnviados.termos ? 'Sim' : 'Não' }}</p>
+
+              <div class="pt-2">
+                <p class="font-semibold">Telefones:</p>
+                <ul class="mt-1 list-disc pl-6">
+                  @for (telefone of dadosEnviados.telefones; track $index) {
+                    <li>{{ telefone.numero }}</li>
+                  }
+                </ul>
+              </div>
+            </div>
+          }
+
+          <div class="modal-action">
+            <form method="dialog">
+              <button class="btn btn-success">Fechar</button>
+            </form>
+          </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+          <button>Fechar</button>
+        </form>
+      </dialog>
+    </div>
+  </div>
+</section>

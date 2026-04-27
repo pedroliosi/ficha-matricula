@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { FichaMatriculaComponent } from "./ficha-matricula/ficha-matricula";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [FichaMatriculaComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
