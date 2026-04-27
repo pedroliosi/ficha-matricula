@@ -91,8 +91,11 @@
           <fieldset class="fieldset w-full">
             <legend class="fieldset-legend">Senha</legend>
             <input type="password" formControlName="senha" class="input input-bordered border-gray-300 w-full" />
-            @if (form.get('senha')?.touched && form.get('senha')?.invalid) {
+            @if (form.get('senha')?.touched && form.get('senha')?.errors?.['required']) {
               <p class="label text-error">Senha obrigatória</p>
+            }
+            @if (form.get('senha')?.touched && form.get('senha')?.errors?.['minlength']) {
+              <p class="label text-error">A senha deve ter no mínimo 6 caracteres</p>
             }
           </fieldset>
 
@@ -126,10 +129,10 @@
 
         <label class="label cursor-pointer justify-start gap-3 rounded-box border border-gray-300 bg-white px-3 py-3">
           <input type="checkbox" formControlName="termos" class="checkbox checkbox-success" />
-          <span class="label-text">Aceito os termos</span>
+          <span class="label-text">Aceito os termos de matrícula</span>
         </label>
         @if (form.get('termos')?.touched && form.get('termos')?.invalid) {
-          <p class="mt-1 px-1 text-sm text-error">Você precisa aceitar os termos para continuar.</p>
+          <p class="mt-1 px-1 text-sm text-error">Você precisa aceitar os termos de matrícula para continuar.</p>
         }
 
         <div class="card-actions mt-2">

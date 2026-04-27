@@ -29,7 +29,7 @@ constructor(private fb: FormBuilder) {
     email: ['', [Validators.required, Validators.email]],
     telefones: this.fb.array([this.criarTelefone()], Validators.required),
     idade: ['', [Validators.required, Validators.min(18)]],
-    senha: ['', Validators.required],
+    senha: ['', [Validators.required, Validators.minLength(6)]],
     confirmarSenha: ['', Validators.required],
     genero: ['', Validators.required],
     cidade: ['', Validators.required],
