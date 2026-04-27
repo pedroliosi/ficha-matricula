@@ -25,7 +25,7 @@ export class FichaMatriculaComponent {
 
 constructor(private fb: FormBuilder) {
   this.form = this.fb.group({
-    nome: ['', Validators.required],
+    nome: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     telefones: this.fb.array([this.criarTelefone()], Validators.required),
     idade: ['', [Validators.required, Validators.min(18)]],

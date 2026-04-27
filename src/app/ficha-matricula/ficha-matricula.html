@@ -18,8 +18,11 @@
           <fieldset class="fieldset w-full">
             <legend class="fieldset-legend">Nome completo</legend>
             <input type="text" formControlName="nome" placeholder="Seu nome" class="input input-bordered border-gray-300 w-full" />
-            @if (form.get('nome')?.touched && form.get('nome')?.invalid) {
+            @if (form.get('nome')?.touched && form.get('nome')?.errors?.['required']) {
               <p class="label text-error">Nome é obrigatório</p>
+            }
+            @if (form.get('nome')?.touched && form.get('nome')?.errors?.['minlength']) {
+              <p class="label text-error">O nome deve ter no mínimo 3 caracteres</p>
             }
           </fieldset>
 
